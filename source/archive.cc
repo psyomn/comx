@@ -2,8 +2,6 @@
 
 #include <zlib.h>
 
-#define CHUNK 16384
-
 namespace comx::core {
   const std::string Archive::BAD_FORMAT_EXCEPTION = "unknown format exception";
 

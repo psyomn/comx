@@ -2,6 +2,10 @@
 
 Simple comic book viewer.
 
+# Dependencies
+
+    zlib
+
 # Build
 
     mkdir build
