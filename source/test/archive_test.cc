@@ -1,27 +1,36 @@
 #include "archive.h"
+#include "testing.h"
 
 #include <iostream>
 
-int TestNonExistingArchiveThrows(void) {
-  using namespace comx::core;
+using comx::testing::MISSING_FIXTURE;
+using comx::core::Archive;
+using comx::core::ArchiveCBZ;
+using comx::core::ArchiveBuilder;
 
-  Archive nope("nope");
-  int badFormat = 0;
-
+std::unique_ptr<Archive> LoadArchive(std::string name) {
   try {
-    nope.Load();
+    std::unique_ptr<Archive> archive = (ArchiveBuilder{}.Path(name).Build());
+    return archive;
   } catch(std::exception& e) {
-    // bad format is expected behavior
-    badFormat = !(e.what() == Archive::BAD_FORMAT_EXCEPTION);
+    return nullptr;
   }
-  return badFormat;
+}
+
+int TestNonExistingArchiveThrows(void) {
+  int badFormat = 0;
+  auto arch = LoadArchive("nope");
+  return !arch;
 }
 
 int TestOpenSimpleArchive(void) {
-  return 0;
+  auto arch = LoadArchive("test/sample-comic.cbz");
+  if (!arch) return 1;
+  return arch->NumImages() == 1;
 }
 
 int TestListFilesInArchives(void) {
+
   return 0;
 }
 

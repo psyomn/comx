@@ -36,3 +36,8 @@ endfunction(psycom_core_test)
 
 psycom_core_test(filesystem_walker_test)
 psycom_core_test(archive_test)
+
+## FIXTURES
+
+file(COPY "${CMAKE_SOURCE_DIR}/test"
+     DESTINATION "${CMAKE_CURRENT_BINARY_DIR}")
