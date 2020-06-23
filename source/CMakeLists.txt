@@ -8,28 +8,32 @@ enable_testing()
 set(srcs utils.cc filesystem_walker.cc archive.cc)
 set(headers utils.h filesystem_walker.h archive.h)
 
-add_library(psycom_core STATIC ${srcs} ${headers})
-target_compile_features(psycom_core PUBLIC cxx_std_17)
-set_target_properties(psycom_core PROPERTIES CXX_EXTENSIONS OFF)
-target_link_libraries(psycom_core PRIVATE libzippp)
-target_include_directories(psycom_core PUBLIC "${LIBZIPPP_HEADER_PATH}")
-add_dependencies(psycom_core libzippp-git-download)
+set(COMX_CORE_LIBS libzippp zip)
+set(COMX_CORE_DEPS libzippp-git-download)
+
+add_library(comx_core STATIC ${srcs} ${headers})
+target_compile_features(comx_core PUBLIC cxx_std_17)
+set_target_properties(comx_core PROPERTIES CXX_EXTENSIONS OFF)
+target_link_libraries(comx_core PRIVATE ${COMX_CORE_LIBS})
+
+target_include_directories(comx_core PUBLIC "${LIBZIPPP_HEADER_PATH}")
+add_dependencies(comx_core ${COMX_CORE_DEPS})
 
 ## TESTING
 
-function(psycom_core_test name)
+function(comx_core_test name)
   add_executable(${name} test/${name}.cc)
-  target_link_libraries(${name} psycom_core)
-  target_include_directories(${name} PRIVATE . libzippp)
+  target_link_libraries(${name} comx_core)
+  target_include_directories(${name} PRIVATE . ${COMX_CORE_LIBS})
   add_test(
     NAME    ${name}_valgrind
     COMMAND valgrind --leak-check=full
                      --error-exitcode=1 $<TARGET_FILE:${name}>)
   add_test(${name} ${name})
-endfunction(psycom_core_test)
+endfunction(comx_core_test)
 
-psycom_core_test(filesystem_walker_test)
-psycom_core_test(archive_test)
+comx_core_test(filesystem_walker_test)
+comx_core_test(archive_test)
 
 ## FIXTURES
 
