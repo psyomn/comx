@@ -4,7 +4,13 @@ Simple comic book viewer.
 
 # Dependencies
 
-    zlib
+On your system you should have:
+
+    libzip
+
+comx will build these by itself in a sandbox:
+
+    libzippp
 
 # Build
 
