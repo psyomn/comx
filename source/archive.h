@@ -1,15 +1,5 @@
 #pragma once
 
-// http://zlib.net/zlib_how.html
-
-#if defined(MSDOS) || defined(OS2) || defined(WIN32) || defined(__CYGWIN__)
-#  include <fcntl.h>
-#  include <io.h>
-#  define SET_BINARY_MODE(file) setmode(fileno(file), O_BINARY)
-#else
-#  define SET_BINARY_MODE(file)
-#endif
-
 #include <filesystem>
 #include <cstdint>
 #include <memory>
@@ -17,13 +7,15 @@
 namespace comx::core {
   class Archive {
   public:
-    Archive(std::filesystem::path path,
-            std::uint32_t numImages,
-            std::string metadata,
-            std::uint32_t crc32);
+    enum class State { Init, Loading, Loaded };
+    explicit Archive(std::filesystem::path path,
+                     std::uint32_t numImages,
+                     std::string metadata,
+                     std::uint32_t crc32);
     virtual ~Archive();
     Archive(const Archive& other) = delete;
     Archive(Archive&& other) = delete;
+    Archive& operator=(Archive&& other) = delete;
 
     virtual void Load() = 0;
 
@@ -33,23 +25,26 @@ namespace comx::core {
 
   protected:
     std::filesystem::path mPath;
-    const std::size_t mChunkSize;
-
     std::uint32_t mNumImages;
     std::string mMetadata;
     std::uint32_t mCRC32;
+    State mState;
+    std::size_t mFileSize;
   };
 
   // Different archive types bellow
-  class ArchiveCBZ: public Archive {
+  class ArchiveCBZ : public Archive {
   public:
     ArchiveCBZ(std::filesystem::path path);
     ~ArchiveCBZ();
     ArchiveCBZ(const ArchiveCBZ& other) = delete;
     ArchiveCBZ(const ArchiveCBZ&& other) = delete;
+    ArchiveCBZ& operator=(ArchiveCBZ other) = delete;
 
     void Load() override;
   private:
+    unsigned char* mIn;
+    unsigned char* mOut;
   };
 
   class ArchiveBuilder {

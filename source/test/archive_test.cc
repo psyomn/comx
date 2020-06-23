@@ -26,6 +26,9 @@ int TestNonExistingArchiveThrows(void) {
 int TestOpenSimpleArchive(void) {
   auto arch = LoadArchive("test/sample-comic.cbz");
   if (!arch) return 1;
+
+  arch->Load();
+
   return arch->NumImages() == 1;
 }
 
