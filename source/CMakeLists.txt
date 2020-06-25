@@ -5,8 +5,21 @@ enable_testing()
 
 ## Project
 
-set(srcs utils.cc filesystem_walker.cc archive.cc)
-set(headers utils.h filesystem_walker.h archive.h)
+set(srcs
+  utils.cc
+  filesystem_walker.cc
+  archive.cc
+  archive_cbz.cc
+  archive_builder.cc
+  )
+
+set(headers
+  utils.h
+  filesystem_walker.h
+  archive.h
+  archive_cbz.h
+  archive_builder.h
+  )
 
 set(COMX_CORE_LIBS libzippp zip)
 set(COMX_CORE_DEPS libzippp-git-download)

@@ -1,4 +1,7 @@
 #include "archive.h"
+#include "archive_cbz.h"
+#include "archive_builder.h"
+
 #include "testing.h"
 
 #include <iostream>
@@ -28,12 +31,10 @@ int TestOpenSimpleArchive(void) {
   if (!arch) return 1;
 
   arch->Load();
-
-  return arch->NumImages() == 1;
+  return arch->NumImages() == 8;
 }
 
 int TestListFilesInArchives(void) {
-
   return 0;
 }
 
