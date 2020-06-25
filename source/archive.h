@@ -20,9 +20,9 @@ namespace comx::core {
 
     virtual void Load() = 0;
 
-    inline std::uint32_t NumImages() { return mNumImages; }
-    inline std::string Metadata() { return mMetadata; }
-    inline std::uint32_t CRC32() { return mCRC32; }
+    inline std::uint32_t NumImages() const { return mNumImages; }
+    inline std::string Metadata() const { return mMetadata; }
+    inline std::uint32_t CRC32() const { return mCRC32; }
     inline const std::vector<std::string>& PageNames() const { return mPageNames; }
     inline std::size_t FileSize() const { return mFileSize; }
     inline State CurrentState() const { return mState; }

@@ -62,7 +62,7 @@ int TestListFilesInArchives(void) {
   return 0;
 }
 
-int TestFileSizeIsNotZero() {
+int TestFileSizeIsNotZero(void) {
   auto arch = LoadArchive("test/sample-comic.cbz");
   if (!arch) return 1;
   arch->Load();
@@ -75,10 +75,33 @@ int TestFileSizeIsNotZero() {
   return 0;
 }
 
+int TestFileMetadata(void) {
+  auto arch = LoadArchive("test/sample-comic.cbz");
+  if (!arch) return 1;
+  arch->Load();
+
+  if (arch->Metadata() == "") {
+    std::cout << "metadata was not successfully read from the archive" << std::endl;
+    return 1;
+  }
+
+  const std::string expected = "THIS IS METADATA";
+  const std::string actual = arch->Metadata();
+
+  if (actual != expected) {
+    std::cout << "expected: " << expected
+              << " actual: " << actual
+              << std::endl;
+  }
+
+  return 0;
+}
+
 int main(void) {
   return
     TestNonExistingArchiveThrows() |
     TestOpenSimpleArchive() |
     TestListFilesInArchives() |
-    TestFileSizeIsNotZero();
+    TestFileSizeIsNotZero() |
+    TestFileMetadata();
 }
