@@ -22,7 +22,9 @@ namespace comx::core {
     mNumImages = entries.size();
     mFileSize = std::filesystem::file_size(mPath);
 
-    for (auto &e : entries) {}
+    for (auto &e : entries) {
+      mPageNames.push_back(e.getName());
+    }
 
     mState = Archive::State::Loaded;
   }

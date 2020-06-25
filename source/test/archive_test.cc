@@ -3,6 +3,7 @@
 #include "archive_builder.h"
 
 #include "testing.h"
+#include "debug.h"
 
 #include <iostream>
 
@@ -21,9 +22,8 @@ std::unique_ptr<Archive> LoadArchive(std::string name) {
 }
 
 int TestNonExistingArchiveThrows(void) {
-  int badFormat = 0;
   auto arch = LoadArchive("nope");
-  return !arch;
+  return arch != nullptr;
 }
 
 int TestOpenSimpleArchive(void) {
@@ -35,6 +35,43 @@ int TestOpenSimpleArchive(void) {
 }
 
 int TestListFilesInArchives(void) {
+  auto arch = LoadArchive("test/sample-comic.cbz");
+  if (!arch) return 1;
+  arch->Load();
+
+  const std::vector<std::string> actual = arch->PageNames();
+  const std::vector<std::string> expected = {"000.png", "001.png", "002.png",
+                                             "003.png", "004.png", "005.png",
+                                             "006.png"};
+
+  if (expected.size() != actual.size()) {
+    std::cout << "sizes differ: expected: " << expected.size()
+              << " actual size: " << actual.size() << std::endl;
+    return 1;
+  }
+
+  if (actual != expected) {
+    std::cout << "actual != expected" << std::endl;
+    std::cout << "actual: " << std::endl;
+    comx::utils::PrintVector(actual);
+
+    std::cout << "expected: " << std::endl;
+    comx::utils::PrintVector(expected);
+  }
+
+  return 0;
+}
+
+int TestFileSizeIsNotZero() {
+  auto arch = LoadArchive("test/sample-comic.cbz");
+  if (!arch) return 1;
+  arch->Load();
+
+  if (!arch->FileSize()) {
+    std::cout << "file size should not be zero" << std::endl;
+    return 1;
+  }
+
   return 0;
 }
 
@@ -42,5 +79,6 @@ int main(void) {
   return
     TestNonExistingArchiveThrows() |
     TestOpenSimpleArchive() |
-    TestListFilesInArchives();
+    TestListFilesInArchives() |
+    TestFileSizeIsNotZero();
 }

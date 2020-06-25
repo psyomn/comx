@@ -3,6 +3,7 @@
 #include <filesystem>
 #include <cstdint>
 #include <memory>
+#include <vector>
 
 namespace comx::core {
   class Archive {
@@ -22,12 +23,16 @@ namespace comx::core {
     inline std::uint32_t NumImages() { return mNumImages; }
     inline std::string Metadata() { return mMetadata; }
     inline std::uint32_t CRC32() { return mCRC32; }
+    inline const std::vector<std::string>& PageNames() const { return mPageNames; }
+    inline std::size_t FileSize() const { return mFileSize; }
+    inline State CurrentState() const { return mState; }
 
     static const std::string BAD_FORMAT_EXCEPTION;
     static const std::string UNKNOWN_FORMAT_EXCEPTION;
 
   protected:
     std::filesystem::path mPath;
+    std::vector<std::string> mPageNames;
     std::uint32_t mNumImages;
     std::string mMetadata;
     std::uint32_t mCRC32;
