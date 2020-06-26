@@ -6,7 +6,6 @@ enable_testing()
 ## Project
 
 set(srcs
-  utils.cc
   filesystem_walker.cc
   archive.cc
   archive_cbz.cc
@@ -14,7 +13,6 @@ set(srcs
   )
 
 set(headers
-  utils.h
   filesystem_walker.h
   archive.h
   archive_cbz.h
