@@ -7,7 +7,7 @@
 namespace comx::core {
   class FilesystemWalker {
   public:
-    FilesystemWalker(std::string path, std::optional<std::string> ext);
+    explicit FilesystemWalker(std::string path, std::optional<std::string> ext);
     ~FilesystemWalker();
     FilesystemWalker(const FilesystemWalker&) = delete;
     FilesystemWalker(FilesystemWalker&&) = delete;
