@@ -10,6 +10,7 @@ set(srcs
   archive.cc
   archive_cbz.cc
   archive_builder.cc
+  config.cc
   )
 
 set(headers
@@ -17,6 +18,7 @@ set(headers
   archive.h
   archive_cbz.h
   archive_builder.h
+  config.h
   )
 
 set(COMX_CORE_LIBS libzippp zip)
@@ -45,6 +47,7 @@ endfunction(comx_core_test)
 
 comx_core_test(filesystem_walker_test)
 comx_core_test(archive_test)
+comx_core_test(config_test)
 
 ## FIXTURES
 
